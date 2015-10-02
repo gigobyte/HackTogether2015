@@ -23,3 +23,10 @@ def setup():
 def run(cmd):
 	if cmd == commands['camera']:
 		print 'adb.run: Open the camera'
+
+def get_device_model():
+	info = subprocess.Popen(adb_commands['devices'], stdout=subprocess.PIPE, shell=True)
+	try:
+		return info.stdout.read().split('model:')[1].split(' ')[0] 
+	except:
+		return 'LG_D802'

@@ -2,6 +2,7 @@ import voice_recognition as vr
 import adb
 
 adb.setup()
+print adb.get_device_model()
 
 while True:
 	usr_input = vr.get_mic_input()
