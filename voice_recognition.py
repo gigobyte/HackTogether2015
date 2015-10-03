@@ -12,13 +12,18 @@ def get_mic_input():
 	except:
 		pass
 
-def extract_possible_command(input):
-	for command in dictionary.commands.values():
-		if fuzz.ratio(command, input) > 75 or command in input:
-			return command
+def extract_possible_commands(inputs):
+	possible_commands = []
 
-		if fuzz.token_sort_ratio(command, input) > 75:
-			return command
+	for input in inputs.split(' and '):
+		for command in dictionary.commands.values():
+			if fuzz.ratio(command, input) > 75 or command in input:
+				possible_commands.append(command)
 
-		if fuzz.partial_ratio(command, input) > 90 and fuzz.token_sort_ratio(command, input) > 50:
-			return command
+			elif fuzz.token_sort_ratio(command, input) > 75:
+				possible_commands.append(command)
+
+			elif fuzz.partial_ratio(command, input) > 90 and fuzz.token_sort_ratio(command, input) > 50:
+				possible_commands.append(command)
+
+	return possible_commands
