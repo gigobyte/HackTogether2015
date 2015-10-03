@@ -17,5 +17,6 @@ adb_commands = {
 	'open-pictures': 'platform-tools\\adb shell "ls /sdcard/DCIM/Camera -R"',
 	'open-music': 'platform-tools\\adb shell "ls /sdcard/Music -R"',
 	'pull': 'platform-tools\\adb pull ',
-	'fetch-sms': 'platform-tools\\adb pull "/data/data/com.android.providers.telephony/databases/mmssms.db $KUDE"'
+	'sms-dir': '/data/data/com.android.providers.telephony/databases/mmssms.db '
+
 }
