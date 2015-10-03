@@ -59,7 +59,7 @@ def run(command_list, context):
 		run_command(save_command)
 		sms = SMS(save_dir)
 
-	def screen_capture (cmd, context, screen, command, sec):
+	def screen_capture(cmd, context, screen, command, sec):
 		s = 'screen.' + screen
 		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\' + s
 		run_command(adb_commands[command])
@@ -68,10 +68,10 @@ def run(command_list, context):
 		run_command(save_command)
 		return save_dir
 
-	def take_screenshot (cmd, context):
+	def take_screenshot(cmd, context):
 		return screen_capture(cmd, context, 'png', 'take-screenshot', 5)
 
-	def take_screenrecord (cmd, context):
+	def take_screenrecord(cmd, context):
 		return screen_capture(cmd, context, 'mp4', 'take-screenrecord', 200)
 
 	location = None
@@ -82,7 +82,7 @@ def run(command_list, context):
 			location = take_picture(cmd, context)
 		elif cmd == commands['save-computer'] or cmd == commands['save-pc']:
 			location = save(cmd, context)
-		elif cmd == commands['show-msg'] or cmd ==  commands['show-sms']:
+		elif cmd == commands['show-msg'] or cmd == commands['show-sms']:
 			location = show_messages(cmd, context)
 
 		context.add(Command(cmd, location))
@@ -95,3 +95,13 @@ def get_device_model():
 		return info.stdout.read().split('model:')[1].split(' ')[0]
 	except:
 		return 'LG_D802'
+
+def check_if_calling():
+	out = run_command(adb_commands['check-callstate'])
+	return out[-2] == 1
+
+def accept_call():
+	run_command(adb_commands['accept-call'])
+
+def decline_call():
+	run_command(adb_commands['decline-call'])

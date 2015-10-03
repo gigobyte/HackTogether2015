@@ -2,9 +2,10 @@ commands = {
 	'take-picture': 'take a picture',
 	'save-computer': 'save it to computer',
 	'save-pc': 'save it to pc',
-	# 'show-sms': 'show sms',
-	# 'show-msg': 'show messages',
-	'open': ''
+	'show-sms': 'show sms',
+	'show-msg': 'show messages',
+	'take-screenshot': 'take screenshot',
+	'record-screen': 'record screen for seconds'
 }
 
 adb_commands = {
@@ -22,5 +23,8 @@ adb_commands = {
 	'pull': 'platform-tools\\adb pull ',
 	'transfer-sms': 'platform-tools\\adb shell "su cat "/data/data/com.android.providers.telephony/databases/mmssms.db" > /sdcard/sms.db"',
 	'take-screenshot' : 'platform-tools\\adb shell "screencap /sdcard/screen.png"',
-	'take-screen-record' : 'platform-tools\\adb shell "screenrecord /sdcard/screen.mp4"'
+	'take-screenrecord' : 'platform-tools\\adb shell "screenrecord /sdcard/screen.mp4"',
+	'accept-call': 'platform-tools\\adb shell input keyevent 5',
+	'decline-call': 'platform-tools\\adb shell input keyevent 6',
+	'check-callstate': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallState"'
 }
