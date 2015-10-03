@@ -11,18 +11,22 @@ def setup():
 	#sleeping so that the phone can connect
 	sleep(3)
 
-	netcfg = subprocess.Popen(adb_commands['netcfg'], stdout=subprocess.PIPE, shell=True)
-	for ip in netcfg.stdout.read().split('\n'):
-		if ip.split(' ')[0] == 'wlan0':
-			device_ip = re.search('192.168.0.\d+', ip).group()
-			connect_command = adb_commands['connect'] + device_ip + ':5556'
+	try:
+		netcfg = subprocess.Popen(adb_commands['netcfg'], stdout=subprocess.PIPE, shell=True)
+		for ip in netcfg.stdout.read().split('\n'):
+			if ip.split(' ')[0] == 'wlan0':
+				device_ip = re.search('192.168.0.\d+', ip).group()
+				connect_command = adb_commands['connect'] + device_ip + ':5556'
+	except:
+		connect_command = adb_commands['connect'] + '10.10.10.242:5556'
 
 	subprocess.Popen(connect_command, stdout=subprocess.PIPE, shell=True)
 	print 'Setup ready!'
 
 def run(cmd):
-	if cmd == commands['camera']:
-		print 'adb.run: Open the camera'
+	if cmd == commands['take-picture']:
+		subprocess.Popen(adb_commands['camera-image-capture'], stdout=subprocess.PIPE, shell=True)
+		subprocess.Popen(adb_commands['take-picture'], stdout=subprocess.PIPE, shell=True)
 
 def get_device_model():
 	info = subprocess.Popen(adb_commands['devices'], stdout=subprocess.PIPE, shell=True)

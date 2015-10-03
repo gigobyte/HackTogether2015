@@ -11,8 +11,14 @@ def get_mic_input():
 		return r.recognize_google(audio)
 	except:
 		pass
-		
+
 def extract_possible_command(input):
 	for command in dictionary.commands.values():
-		if fuzz.ratio(command, input) > 75 or command in input or fuzz.token_sort_ratio(command, input) > 75:
+		if fuzz.ratio(command, input) > 75 or command in input:
+			return command
+
+		if fuzz.token_sort_ratio(command, input) > 75:
+			return command
+
+		if fuzz.partial_ratio(command, input) > 90 and fuzz.token_sort_ratio(command, input) > 50:
 			return command
