@@ -1,13 +1,14 @@
 import voice_recognition as vr
 import adb
-print adb.get_device_model()
+from memory import CommandQueue
+from time import sleep
 
 hardcoded = [
-	'Take a picture',
-	'Can you please take a picture',
-	'Picture take'
+	'Take a picture and save it to my computer'
 ]
 
+mem = CommandQueue()
+
 for usr_input in hardcoded:
-	real_command = vr.extract_possible_command(usr_input)
-	adb.run(real_command)
+	real_commands = vr.extract_possible_commands(usr_input)
+	mem = adb.run(real_commands, mem)
