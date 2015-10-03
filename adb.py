@@ -52,13 +52,15 @@ def run(command_list, context, original_input):
 		return where_to_save
 
 	def show_messages(cmd, context):
+		print 'show_messages() called'
 		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\sms.db'
 		run_command(adb_commands['transfer-sms'])
 		save_command = adb_commands['pull'] + '/sdcard/sms.db' + ' ' + save_dir
 		run_command(save_command)
 		sms = SMS(save_dir)
 
-	def screen_capture(cmd, context, screen, command, sec):
+	def screen_capture(cmd, context, screen, command, sec, called):
+		print 'take_screen' + called + '() called'
 		s = 'screen.' + screen
 		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\' + s
 
@@ -71,10 +73,14 @@ def run(command_list, context, original_input):
 		return save_dir
 
 	def take_screenshot(cmd, context):
-		return screen_capture(cmd, context, 'png', 'take-screenshot', 5)
+		return screen_capture(cmd, context, 'png', 'take-screenshot', 5, 'shot')
 
 	def take_screenrecord(cmd, context, seconds):
-		return screen_capture(cmd, context, 'mp4', 'take-screenrecord', seconds)
+		return screen_capture(cmd, context, 'mp4', 'take-screenrecord', seconds, 'record')
+
+	def copy(comp, phone):
+		print 'copy() called'
+		run_command(adb['push'] + comp + ' ' + phone)
 
 	location = None
 	requested_command = None
