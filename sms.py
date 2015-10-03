@@ -3,11 +3,13 @@ import sqlite3
 
 class SMS(object):
 	def __init__(self, db):
-		self.smss = sqlite3.connect(db).cursor().execute('SELECT * FROM threads').fetchall()
+		print db
+		self.smss = sqlite3.connect(db)
+		self.smss = self.smss.cursor()
+		self.smss = self.smss.execute('SELECT * FROM sqlite_master;')
 
 	def last(self):
 		return self.smss[0]
 
 	def all(self):
 		return self.smss
-#SMS('$KUDE')

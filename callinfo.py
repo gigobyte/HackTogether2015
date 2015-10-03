@@ -1,3 +1,6 @@
+from adb import run_command
+from dictionary import adb_commands
+
 class CallInfo(object):
 	def check_if_calling(self):
 		out = run_command(adb_commands['check-callstate'])
