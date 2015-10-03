@@ -8,20 +8,18 @@ import requests
 
 def on_closing():
     top.destroy()
-    icons = itertools.cycle(glob.glob('*.ico'))
+    icons = itertools.cycle(glob.glob('images/*.ico'))
     hover_text = "Smartphone Voice"
     menu_options = (('Start', None, main),)
     SysTrayIcon(icons.next(), hover_text, menu_options, on_quit=None, default_menu_index=1)
 
 def showSmartphone():
-    x = 0
-    y = 0
     image = Image.open('phone.jpg')
     image_size = image.size
     photoImage = ImageTk.PhotoImage(image)
     label = Label(image=photoImage)
     label.image = photoImage
-    label.place(x=x, y=y)
+    label.place(x=0, y=0)
 
 def showText(width, height, device):
     set_width = (((width - 130)/2)/2)
@@ -30,24 +28,56 @@ def showText(width, height, device):
     connect_to = Label(text=connect_to_string)
     connect_to.text = connect_to_string
     connect_to.place(x=set_width, y=height)
-    
+
+def microphoneAction():
+    global microphone_check
+    print microphone_check
+    global device
+    if (microphone_check == 0):
+        microphone_check = 1
+    else:
+        microphone_check = 0
+    gui(device)
 
 def gui(device):
-    flag = 0;
+    global top
+    global microphone_check
+    flag = 0
     top.title("Smartphone Voice")
-    top.wm_iconbitmap('voice15.ico')
+    top.wm_iconbitmap('images/voice15.ico')
     image = Image.open('phone.jpg')
+    
     image_size = image.size
+    width = image_size[0]
+    global height
+    height = image_size[1]
+    global set_width
+    set_width = width - 125
+    
     top.resizable(width=FALSE, height=FALSE)
-    top.geometry('{}x{}'.format(image_size[0], image_size[1]+40))
+    ws = top.winfo_screenwidth() # width of the screen
+    hs = top.winfo_screenheight() # height of the screen
+    x = (ws/1.2) - (width/2)
+    y = (hs/1.5) - (height/2)
+    top.geometry('%dx%d+%d+%d' % (width, height+84, x, y))
+    
+    microphone_image = ImageTk.PhotoImage(file="images/mic_on.png")
+    if (microphone_check == 0):
+        microphone_image = ImageTk.PhotoImage(file="images/mic_on.png")
+    else:
+        microphone_image = ImageTk.PhotoImage(file="images/mic_off.png")
+    microphone = Tkinter.Button(top, image =microphone_image, command = microphoneAction)
+    microphone.place(x=set_width, y=(height+15))
+        
     if (flag == 0):
-        showText(image_size[1], image_size[1], device)
+        showText(width, height, device)
         showSmartphone()
         flag = 1
     top.protocol("WM_DELETE_WINDOW", on_closing)
     top.mainloop()
 
 def main():
+    global device
     device = adb.get_device_model()
     print device
     url = "http://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=" + device
@@ -55,6 +85,8 @@ def main():
     scraped_page = scraped_page.split("http://cdn2.gsmarena.com/vv/bigpic/")[1].split("alt=")[0].split(";")[0]
     scraped_gsm_image = scraped_page[:-1]
     global top
+    global microphone_check
+    microphone_check = 0
     top = Tkinter.Tk()
     urllib.urlretrieve("http://cdn2.gsmarena.com/vv/bigpic/%s" % scraped_gsm_image, "phone.jpg")
     gui(device)
