@@ -3,6 +3,7 @@ import adb
 from callinfo import CallInfo
 from memory import CommandQueue
 from time import sleep
+import itertools, glob
 
 # hardcoded = [
 # 	'get contacts'
@@ -26,30 +27,54 @@ import requests
 import threading
 import tkFont
 
+listening = False
+
 def startSystemTray():
 	global device
 	icons = itertools.cycle(glob.glob('images/*.ico'))
 	hover_text = "Smartphone Voice"
-	menu_options = (('Start/Stop', None, microphoneAction),)
-	SysTrayIcon(icons.next(), hover_text, menu_options, on_quit=onClosing, default_menu_index=1)
+	menu_options = (('Show',None,Remake),
+                        ('Start/Stop', None, microphoneAction),)
+	SysTrayIcon(icons.next(), hover_text, menu_options, on_quit=Terminate, default_menu_index=1)
 
 def onClosing():
-	sys.exit()
+        global top
+        top.destroy()
+
+def Terminate():
+        sys.exit()
+
+def Remake():
+        main()
 
 def microphoneAction():
-	global microphone_check
-	global microphone
-	print microphone_check
-	global device
-	microphone_check = not microphone_check
-	if microphone_check:
-		image = ImageTk.PhotoImage(Image.open('images/button_activated.gif'))
-		microphone.config(image=image)
-		microphone.image = image
-	else:
-		image = ImageTk.PhotoImage(Image.open('images/1.png'))
-		microphone.config(image=image)
-		microphone.image = image
+    global microphone_check
+    global microphone
+    global device
+    global listening
+    microphone_check = not microphone_check
+    if microphone_check:
+        image = ImageTk.PhotoImage(Image.open('images/button_activated.gif'))
+        microphone.config(image=image, background = "white", bd = 0)
+        microphone.image = image
+        threading.Thread(target=listen_and_do).start()
+        listening = True
+    else:
+        image = ImageTk.PhotoImage(Image.open('images/1.png'))
+        microphone.config(image=image, background = "white", bd = 0)
+        microphone.image = image
+        listening = False
+
+def listen_and_do():
+    print 'listen_and_do() called'
+    mem = CommandQueue()
+    global listening
+
+    while listening:
+        usr_input = vr.get_mic_input()
+        print usr_input
+        real_commands = vr.extract_possible_commands(usr_input)
+        mem = adb.run(real_commands, mem, usr_input)
 
 def gui(device):
 	global top
@@ -76,6 +101,11 @@ def gui(device):
 	y = (hs/1.5) - (height/2)
 	top.geometry('%dx%d+%d+%d' % (width, height+92, x, y))
 
+	''' SHOW EXIT ICON '''
+	exit_image = ImageTk.PhotoImage(file="images/exit.png")
+	exit_button = Tkinter.Button(top, image =exit_image, command = onClosing, background = "white", bd = 0)
+	exit_button.pack(anchor = "se")
+
 	''' SHOW SMARTPHONE '''
 	image = Image.open('phone.jpg')
 	image_size = image.size
@@ -92,7 +122,7 @@ def gui(device):
 
 	''' SHOW/UPDATE BUTTON '''
 	microphone_image = ImageTk.PhotoImage(file="images/1.png")
-	microphone = Tkinter.Button(top, image =microphone_image, command = microphoneAction)
+	microphone = Tkinter.Button(top, image =microphone_image, command = microphoneAction, background = "white", bd = 0)
 	microphone.pack(fill="x")
 
 	top.protocol("WM_DELETE_WINDOW", onClosing)
@@ -104,6 +134,9 @@ def main():
 	device = adb.get_device_model()
 	url = "http://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=" + device
 	scraped_page = requests.get(url).text
+	model_name = scraped_page.split("specs-phone-name-title")[1].split("h1")[0].split(">")[1].split("<")[0]
+	print model_name
+	device = model_name
 	scraped_page = scraped_page.split("http://cdn2.gsmarena.com/vv/bigpic/")[1].split("alt=")[0].split(";")[0]
 	scraped_gsm_image = scraped_page[:-1]
 	global top
@@ -118,5 +151,4 @@ def main():
 	
 
 if __name__ == '__main__':
-	import itertools, glob
 	main()
