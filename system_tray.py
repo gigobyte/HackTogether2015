@@ -3,6 +3,7 @@ import adb
 from callinfo import CallInfo
 from memory import CommandQueue
 from time import sleep
+import itertools, glob
 
 # hardcoded = [
 # 	'get contacts'
@@ -30,11 +31,19 @@ def startSystemTray():
 	global device
 	icons = itertools.cycle(glob.glob('images/*.ico'))
 	hover_text = "Smartphone Voice"
-	menu_options = (('Start/Stop', None, microphoneAction),)
-	SysTrayIcon(icons.next(), hover_text, menu_options, on_quit=onClosing, default_menu_index=1)
+	menu_options = (('Show',None,Remake),
+                        ('Start/Stop', None, microphoneAction),)
+	SysTrayIcon(icons.next(), hover_text, menu_options, on_quit=Terminate, default_menu_index=1)
 
 def onClosing():
-	sys.exit()
+        global top
+        top.destroy()
+
+def Terminate():
+        sys.exit()
+
+def Remake():
+        main()
 
 def microphoneAction():
 	global microphone_check
@@ -75,6 +84,11 @@ def gui(device):
 	x = (ws/1.2) - (width/2)
 	y = (hs/1.5) - (height/2)
 	top.geometry('%dx%d+%d+%d' % (width, height+92, x, y))
+
+	''' SHOW EXIT ICON '''
+	exit_image = ImageTk.PhotoImage(file="images/exit.png")
+	exit_button = Tkinter.Button(top, image =exit_image, command = onClosing, background = "white", bd = 0)
+	exit_button.pack(anchor = "se")
 
 	''' SHOW SMARTPHONE '''
 	image = Image.open('phone.jpg')
@@ -121,5 +135,4 @@ def main():
 	
 
 if __name__ == '__main__':
-	import itertools, glob
 	main()
