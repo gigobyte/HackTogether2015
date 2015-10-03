@@ -10,5 +10,9 @@ adb_commands = {
 	'kill-server': 'platform-tools\\adb.exe kill-server',
 	'start-server': 'platform-tools\\adb.exe start-server',
 	'camera-image-capture': 'platform-tools\\adb shell "am start -a android.media.action.IMAGE_CAPTURE"',
-	'take-picture': 'platform-tools\\adb shell "input keyevent KEYCODE_CAMERA"'
+	'take-picture': 'platform-tools\\adb shell "input keyevent KEYCODE_CAMERA"',
+	'list' : 'platform-tools\\adb shell "ls / -R"',
+	'open movies' : 'platform-tools\\adb shell "ls /sdcard/Movies -R"',
+	'open pictures' : 'platform-tools\\adb shell "ls /sdcard/Pictures -R"',
+	'open music' : 'platform-tools\\adb shell "ls /sdcard/Music -R"'
 }
