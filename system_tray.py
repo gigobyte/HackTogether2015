@@ -24,6 +24,7 @@ def microphoneAction():
     print microphone_check
     global device
     microphone_check = not microphone_check
+    gui(device)
 
 def gui(device):
     global top
@@ -70,8 +71,7 @@ def gui(device):
     else:
         microphone_image = ImageTk.PhotoImage(file="images/mic_off.png")
     microphone = Tkinter.Button(top, image =microphone_image, command = microphoneAction)
-    microphone.place(fill="x")
-    microphone.pack()
+    microphone.pack(fill="x")
 
     top.protocol("WM_DELETE_WINDOW", onClosing)
     
