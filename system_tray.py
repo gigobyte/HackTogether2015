@@ -104,6 +104,9 @@ def main():
 	device = adb.get_device_model()
 	url = "http://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=" + device
 	scraped_page = requests.get(url).text
+	model_name = scraped_page.split("specs-phone-name-title")[1].split("h1")[0].split(">")[1].split("<")[0]
+	print model_name
+	device = model_name
 	scraped_page = scraped_page.split("http://cdn2.gsmarena.com/vv/bigpic/")[1].split("alt=")[0].split(";")[0]
 	scraped_gsm_image = scraped_page[:-1]
 	global top
