@@ -1,6 +1,7 @@
 import subprocess
 from dictionary import (adb_commands, commands)
 from time import sleep
+from memory import Command
 import re
 
 def setup():
@@ -23,10 +24,29 @@ def setup():
 	subprocess.Popen(connect_command, stdout=subprocess.PIPE, shell=True)
 	print 'Setup ready!'
 
-def run(cmd):
+def run(cmd, context):
+	location = None
+	requested_command = None
+
 	if cmd == commands['take-picture']:
-		subprocess.Popen(adb_commands['camera-image-capture'], stdout=subprocess.PIPE, shell=True)
 		subprocess.Popen(adb_commands['take-picture'], stdout=subprocess.PIPE, shell=True)
+		requested_command = commands['take-picture']
+		sleep(3)
+		location = subprocess.Popen(adb_commands['open-pictures'], stdout=subprocess.PIPE, shell=True)
+		location = '/sdcard/DCIM/Camera/' + location.stdout.read().split('\n')[-2]
+	if cmd == commands['save-computer'] or cmd == commands['save-pc']:
+		what_to_save = context.commands[-1].action
+		where_to_save = context.commands[-1].location
+
+		if what_to_save == commands['take-picture']:
+			save_command = adb_commands['pull'] + where_to_save +'\\%\\USERPROFILE%\Desktop\\'
+			print save_command
+			#subprocess.Popen(save_command, stdout=subprocess.PIPE, shell=True)
+
+
+	cmd_obj = Command(cmd, location)
+
+	return cmd_obj
 
 def get_device_model():
 	info = subprocess.Popen(adb_commands['devices'], stdout=subprocess.PIPE, shell=True)
