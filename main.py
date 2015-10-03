@@ -71,6 +71,7 @@ def listen_and_do():
     global listening
 
     while listening:
+    	print listening
         usr_input = vr.get_mic_input()
         print usr_input
         real_commands = vr.extract_possible_commands(usr_input)
