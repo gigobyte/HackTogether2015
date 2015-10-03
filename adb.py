@@ -29,7 +29,7 @@ def setup():
 	subprocess.Popen(connect_command, stdout=subprocess.PIPE, shell=True)
 	print 'Setup ready!'
 
-def run(command_list, context):
+def run(command_list, context, original_input):
 	def take_picture(cmd, context):
 		print 'take_picture() called'
 		subprocess.Popen(adb_commands['take-picture'], stdout=subprocess.PIPE, shell=True)
@@ -62,17 +62,20 @@ def run(command_list, context):
 	def screen_capture(cmd, context, screen, command, sec):
 		s = 'screen.' + screen
 		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\' + s
-		run_command(adb_commands[command])
-		save_command = adb_commands['pull'] + '/sdcard/' + s + ' ' + save_dir
-		sleep(sec)
+
+		if command == 'take-screenrecord':
+			run_command(adb_commands[command] + ' --time-limit ' + str(sec))
+			save_command = adb_commands['pull'] + '/sdcard/' + s + ' ' + save_dir
+			sleep(sec+5)
 		run_command(save_command)
+		os.system(save_dir)
 		return save_dir
 
 	def take_screenshot(cmd, context):
 		return screen_capture(cmd, context, 'png', 'take-screenshot', 5)
 
-	def take_screenrecord(cmd, context):
-		return screen_capture(cmd, context, 'mp4', 'take-screenrecord', 200)
+	def take_screenrecord(cmd, context, seconds):
+		return screen_capture(cmd, context, 'mp4', 'take-screenrecord', seconds)
 
 	location = None
 	requested_command = None
@@ -84,6 +87,12 @@ def run(command_list, context):
 			location = save(cmd, context)
 		elif cmd == commands['show-msg'] or cmd == commands['show-sms']:
 			location = show_messages(cmd, context)
+		elif cmd == commands['take-screenshot']:
+			location = take_screenshot(cmd, context)
+		elif cmd == commands['record-screen']:
+			seconds = [int(i) for i in original_input.split() if i.isdigit()][0]
+			print seconds
+			location = take_screenrecord(cmd, context, seconds)
 
 		context.add(Command(cmd, location))
 

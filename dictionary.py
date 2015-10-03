@@ -26,5 +26,6 @@ adb_commands = {
 	'take-screenrecord' : 'platform-tools\\adb shell "screenrecord /sdcard/screen.mp4"',
 	'accept-call': 'platform-tools\\adb shell input keyevent 5',
 	'decline-call': 'platform-tools\\adb shell input keyevent 6',
-	'check-callstate': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallState"'
+	'check-callstate': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallState"',
+	'check-callnumber': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallIncomingNumber"'
 }
