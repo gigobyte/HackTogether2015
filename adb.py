@@ -82,6 +82,11 @@ def run(command_list, context, original_input):
 		print 'copy() called'
 		run_command(adb['push'] + comp + ' ' + phone)
 
+	def db(cmd, contex, uri):
+		export = os.environ['USERPROFILE'] + '\\Desktop\\db'
+		run_command(adb['db'] + uri + ' > ' + export)
+		return export
+
 	location = None
 	requested_command = None
 	print command_list
