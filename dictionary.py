@@ -5,7 +5,9 @@ commands = {
 	'show-sms': 'show sms',
 	'show-msg': 'show messages',
 	'take-screenshot': 'take screenshot',
-	'record-screen': 'record screen for seconds'
+	'record-screen': 'record screen for seconds',
+	'get-contacts': 'get contacts'
+
 }
 
 adb_commands = {

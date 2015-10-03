@@ -103,6 +103,8 @@ def run(command_list, context, original_input):
 			seconds = [int(i) for i in original_input.split() if i.isdigit()][0]
 			print seconds
 			location = take_screenrecord(cmd, context, seconds)
+		elif cmd == commands['get-contacts']:
+			location = db(cmd, contex, 'content://com.android.contacts/contacts')
 
 		context.add(Command(cmd, location))
 
