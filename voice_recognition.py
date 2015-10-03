@@ -20,18 +20,20 @@ def get_text_from_wav(path):
 
 	return r.recognize_google(audio)
 
+def filter_kind_words(command):
+	for kind_word in dictionary.kind_words:
+		command = command.replace(kind_word, '')
+
+	return command
+
 def extract_possible_commands(inputs):
 	possible_commands = []
 
 	for input in inputs.split(' and '):
+		input = filter_kind_words(input)
+		print input
 		for command in dictionary.commands.values():
 			if fuzz.ratio(command, input) > 75 or command in input:
-				possible_commands.append(command)
-
-			elif fuzz.token_sort_ratio(command, input) > 75:
-				possible_commands.append(command)
-
-			elif fuzz.partial_ratio(command, input) > 90 and fuzz.token_sort_ratio(command, input) > 50:
 				possible_commands.append(command)
 
 	return possible_commands

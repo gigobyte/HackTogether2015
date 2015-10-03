@@ -6,14 +6,14 @@ from time import sleep
 import itertools, glob
 
 # hardcoded = [
-# 	'get contacts'
+#   'get contacts'
 # ]
 
 # mem = CommandQueue()
 
 # for usr_input in hardcoded:
-# 	real_commands = vr.extract_possible_commands(usr_input)
-# 	mem = adb.run(real_commands, mem, usr_input)
+#   real_commands = vr.extract_possible_commands(usr_input)
+#   mem = adb.run(real_commands, mem, usr_input)
 
 
 from system_tray_lib import *
@@ -34,53 +34,57 @@ def startSystemTray():
 	icons = itertools.cycle(glob.glob('images/*.ico'))
 	hover_text = "Smartphone Voice"
 	menu_options = (('Show',None,Remake),
-                        ('Start/Stop', None, microphoneAction),)
+						('Start/Stop', None, microphoneAction),)
 	SysTrayIcon(icons.next(), hover_text, menu_options, on_quit=Terminate, default_menu_index=1)
 
 def onClosing():
-        global top
-        top.destroy()
+		global top
+		top.destroy()
 
 def Terminate():
-        sys.exit()
+		sys.exit()
 
 def Remake():
-        main()
+		main()
 
 def microphoneAction():
-    global microphone_check
-    global microphone
-    global device
-    global listening
-    microphone_check = not microphone_check
-    if microphone_check:
-        image = ImageTk.PhotoImage(Image.open('images/button_activated.gif'))
-        microphone.config(image=image, background = "white", bd = 0)
-        microphone.image = image
-        threading.Thread(target=listen_and_do).start()
-        listening = True
-    else:
-        image = ImageTk.PhotoImage(Image.open('images/1.png'))
-        microphone.config(image=image, background = "white", bd = 0)
-        microphone.image = image
-        listening = False
+	global microphone_check
+	global microphone
+	global device
+	global listening
+	microphone_check = not microphone_check
+	if microphone_check:
+		image = ImageTk.PhotoImage(Image.open('images/button_activated.gif'))
+		microphone.config(image=image, background = "white", bd = 0)
+		microphone.image = image
+		threading.Thread(target=listen_and_do).start()
+		listening = True
+	else:
+		image = ImageTk.PhotoImage(Image.open('images/1.png'))
+		microphone.config(image=image, background = "white", bd = 0)
+		microphone.image = image
+		listening = False
 
 def listen_and_do():
-	result = vr.get_text_from_wav("recordings/take_a_picture.wav")
+	result = vr.get_text_from_wav('recordings/take_a_picture.wav')
 	print result
 	mem = CommandQueue()
 	real_commands = vr.extract_possible_commands(result)
 	mem = adb.run(real_commands, mem, result)
-	'''
-    print 'listen_and_do() called'
-    mem = CommandQueue()
-    global listening
+	result = vr.get_text_from_wav('recordings/send_computer.wav')
+	real_commands = vr.extract_possible_commands(result)
+	mem = adb.run(real_commands, mem, result)
 
-    while listening:
-        usr_input = vr.get_mic_input()
-        print usr_input
-        real_commands = vr.extract_possible_commands(usr_input)
-        mem = adb.run(real_commands, mem, usr_input)'''
+	'''
+	print 'listen_and_do() called'
+	mem = CommandQueue()
+	global listening
+
+	while listening:
+		usr_input = vr.get_mic_input()
+		print usr_input
+		real_commands = vr.extract_possible_commands(usr_input)
+		mem = adb.run(real_commands, mem, usr_input)'''
 
 def gui(device):
 	global top

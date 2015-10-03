@@ -32,3 +32,16 @@ adb_commands = {
 	'check-callnumber': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallIncomingNumber"',
 	'db' :  'platform-tools\\adb shell "content query --uri "'
 }
+
+kind_words = {
+	'please',
+	'would',
+	'could',
+	'can',
+	'want',
+	'my',
+	'hope',
+	'you',
+	'can',
+	' i '
+}
