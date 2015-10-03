@@ -6,8 +6,8 @@ class SMS(object):
 		self.smss = sqlite3.connect(db).cursor().execute('SELECT * FROM *').fetchall()
 
 	def last(self):
-		return self.db.smss[0]
+		return self.smss[0]
 
 	def all(self):
-		return self.db.smss
+		return self.smss
 #SMS('$KUDE')
