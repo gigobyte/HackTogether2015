@@ -1,7 +1,10 @@
 commands = {
 	'take-picture': 'take a picture',
 	'save-computer': 'save it to computer',
-	'save-pc': 'save it to pc'
+	'save-pc': 'save it to pc',
+	# 'show-sms': 'show sms',
+	# 'show-msg': 'show messages',
+	'open': ''
 }
 
 adb_commands = {
@@ -17,6 +20,5 @@ adb_commands = {
 	'open-pictures': 'platform-tools\\adb shell "ls /sdcard/DCIM/Camera -R"',
 	'open-music': 'platform-tools\\adb shell "ls /sdcard/Music -R"',
 	'pull': 'platform-tools\\adb pull ',
-	'sms-dir': '/data/data/com.android.providers.telephony/databases/mmssms.db '
-
+	'transfer-sms': 'platform-tools\\adb shell "su cat "/data/data/com.android.providers.telephony/databases/mmssms.db" > /sdcard/sms.db"'
 }

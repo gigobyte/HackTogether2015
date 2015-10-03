@@ -3,7 +3,7 @@ import sqlite3
 
 class SMS(object):
 	def __init__(self, db):
-		self.smss = sqlite3.connect(db).cursor().execute('SELECT * FROM *').fetchall()
+		self.smss = sqlite3.connect(db).cursor().execute('SELECT * FROM threads').fetchall()
 
 	def last(self):
 		return self.smss[0]

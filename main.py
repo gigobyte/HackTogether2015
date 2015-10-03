@@ -4,7 +4,7 @@ from memory import CommandQueue
 from time import sleep
 
 hardcoded = [
-	'Take a picture and save it to my computer'
+	'Show me my messages'
 ]
 
 mem = CommandQueue()

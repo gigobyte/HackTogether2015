@@ -2,14 +2,18 @@ import subprocess
 from dictionary import (adb_commands, commands)
 from time import sleep
 from memory import Command
+from sms import SMS
 import re
 import os
 
-def setup():
-	subprocess.Popen(adb_commands['kill-server'], stdout=subprocess.PIPE, shell=True)
-	subprocess.Popen(adb_commands['start-server'], stdout=subprocess.PIPE, shell=True)
+def run_command(command):
+	out = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+	return out.stdout.read()
 
-	subprocess.Popen(adb_commands['tcpip'], stdout=subprocess.PIPE, shell=True)
+def setup():
+	run_command(adb_commands['kill-server'])
+	run_command(adb_commands['start-server'])
+	run_command(adb_commands['tcpip'])
 	#sleeping so that the phone can connect
 	sleep(3)
 
@@ -48,6 +52,13 @@ def run(command_list, context):
 
 		return where_to_save
 
+	def show_messages(cmd, context):
+		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\sms.db'
+		run_command(adb_commands['transfer-sms'])
+		save_command = adb_commands['pull'] + '/sdcard/sms.db' + ' ' + save_dir
+		run_command(save_command)
+		sms = SMS(save_dir)
+
 	location = None
 	requested_command = None
 	print command_list
@@ -56,6 +67,8 @@ def run(command_list, context):
 			location = take_picture(cmd, context)
 		elif cmd == commands['save-computer'] or cmd == commands['save-pc']:
 			location = save(cmd, context)
+		elif cmd == commands['show-msg'] or cmd ==  commands['show-sms']:
+			location = show_messages(cmd, context)
 
 		context.add(Command(cmd, location))
 
