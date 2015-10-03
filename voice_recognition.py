@@ -12,6 +12,14 @@ def get_mic_input():
 	except:
 		pass
 
+def get_text_from_wav(path):
+	r = sr.Recognizer()
+
+	with sr.WavFile(path) as source:
+		audio = r.record(source)
+
+	return r.recognize_google(audio)
+
 def extract_possible_commands(inputs):
 	possible_commands = []
 
