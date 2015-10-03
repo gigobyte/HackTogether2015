@@ -103,13 +103,3 @@ def get_device_model():
 		return info.split('model:')[1].split(' ')[0]
 	except:
 		return 'LG_D802'
-
-def check_if_calling():
-	out = run_command(adb_commands['check-callstate'])
-	return out[-2] == 1
-
-def accept_call():
-	run_command(adb_commands['accept-call'])
-
-def decline_call():
-	run_command(adb_commands['decline-call'])

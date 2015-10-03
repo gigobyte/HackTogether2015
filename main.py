@@ -1,10 +1,8 @@
 import voice_recognition as vr
 import adb
+from callinfo import CallInfo
 from memory import CommandQueue
 from time import sleep
-
-while 1:
-	
 
 hardcoded = [
 	'picture take and save it to my pc'
