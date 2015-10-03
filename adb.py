@@ -7,8 +7,7 @@ import re
 import os
 
 def run_command(command):
-	out = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
-	return out.stdout.read()
+	return subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).stdout.read()
 
 def setup():
 	run_command(adb_commands['kill-server'])
@@ -18,25 +17,25 @@ def setup():
 	sleep(3)
 
 	try:
-		netcfg = subprocess.Popen(adb_commands['netcfg'], stdout=subprocess.PIPE, shell=True)
-		for ip in netcfg.stdout.read().split('\n'):
+		netcfg = run_command(adb_commands['netcfg'])
+		for ip in netcfg.split('\n'):
 			if ip.split(' ')[0] == 'wlan0':
 				device_ip = re.search('192.168.0.\d+', ip).group()
 				connect_command = adb_commands['connect'] + device_ip + ':5556'
 	except:
 		connect_command = adb_commands['connect'] + '10.10.10.242:5556'
 
-	subprocess.Popen(connect_command, stdout=subprocess.PIPE, shell=True)
+	run_command(connect_command)
 	print 'Setup ready!'
 
 def run(command_list, context, original_input):
 	def take_picture(cmd, context):
 		print 'take_picture() called'
-		subprocess.Popen(adb_commands['take-picture'], stdout=subprocess.PIPE, shell=True)
+		run_command(adb_commands['take-picture'])
 		requested_command = commands['take-picture']
 		sleep(5)
-		location = subprocess.Popen(adb_commands['open-pictures'], stdout=subprocess.PIPE, shell=True)
-		return '/sdcard/DCIM/Camera/' + location.stdout.read().split('\n')[-2].replace('\r', '')
+		location = run_command(adb_commands['open-pictures'])
+		return '/sdcard/DCIM/Camera/' + location.split('\n')[-2].replace('\r', '')
 
 	def save(cmd, context):
 		print 'save() called'
@@ -46,7 +45,7 @@ def run(command_list, context, original_input):
 		if what_to_save == commands['take-picture']:
 			save_dir = os.environ['USERPROFILE'] + '\\Desktop\\picture.jpg'
 			save_command = adb_commands['pull'] + where_to_save + ' ' + save_dir
-			subprocess.Popen(save_command, stdout=subprocess.PIPE, shell=True)
+			run_command(save_command)
 			sleep(2)
 			os.system(save_dir)
 
@@ -99,9 +98,9 @@ def run(command_list, context, original_input):
 	return context
 
 def get_device_model():
-	info = subprocess.Popen(adb_commands['devices'], stdout=subprocess.PIPE, shell=True)
+	info = run_command(adb_commands['devices'])
 	try:
-		return info.stdout.read().split('model:')[1].split(' ')[0]
+		return info.split('model:')[1].split(' ')[0]
 	except:
 		return 'LG_D802'
 
