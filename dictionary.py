@@ -30,5 +30,5 @@ adb_commands = {
 	'decline-call': 'platform-tools\\adb shell input keyevent 6',
 	'check-callstate': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallState"',
 	'check-callnumber': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallIncomingNumber"',
-	'db' :  'platform-tools\\adb shell "content query --uri "
+	'db' :  'platform-tools\\adb shell "content query --uri "'
 }

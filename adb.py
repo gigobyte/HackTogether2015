@@ -84,7 +84,7 @@ def run(command_list, context, original_input):
 
 	def db(cmd, contex, uri):
 		export = os.environ['USERPROFILE'] + '\\Desktop\\db'
-		run_command(adb['db'] + uri + ' > ' + export)
+		run_command(adb_commands['db'] + uri + ' > ' + export)
 		return export
 
 	location = None
@@ -104,7 +104,7 @@ def run(command_list, context, original_input):
 			print seconds
 			location = take_screenrecord(cmd, context, seconds)
 		elif cmd == commands['get-contacts']:
-			location = db(cmd, contex, 'content://com.android.contacts/contacts')
+			location = db(cmd, context, 'content://com.android.contacts/contacts')
 
 		context.add(Command(cmd, location))
 
