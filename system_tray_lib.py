@@ -208,7 +208,7 @@ class SysTrayIcon(object):
         if menu_action == self.QUIT:
             win32gui.DestroyWindow(self.hwnd)
         else:
-            menu_action(self)
+            menu_action()
             
 def non_string_iterable(obj):
     try:
