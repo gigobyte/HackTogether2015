@@ -59,20 +59,20 @@ def run(command_list, context):
 		run_command(save_command)
 		sms = SMS(save_dir)
 
-	def take_screenshot (cmd, context):
-		screen = 'screen.png'
-		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\'
-		run_command(adb_commands['take-screenshot'])
-		save_command = adb_commands['pull'] + '/sdcard/' + screen + ' ' + save_dir + screen
+	def screen_capture (cmd, context, screen, command, sec):
+		s = 'screen.' + screen
+		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\' + s
+		run_command(adb_commands[command])
+		save_command = adb_commands['pull'] + '/sdcard/' + s + ' ' + save_dir
+		sleep(sec)
 		run_command(save_command)
+		return save_dir
+
+	def take_screenshot (cmd, context):
+		return screen_capture(cmd, context, 'png', 'take-screenshot', 5)
 
 	def take_screenrecord (cmd, context):
-		screen = 'screen.mp4'
-		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\'
-		run_command(adb_commands['take-screenrecord'])
-		save_command = adb_commands['pull'] + '/sdcard/' + screen + ' ' + save_dir + screen
-		sleep(200)
-		run_command(save_command)
+		return screen_capture(cmd, context, 'mp4', 'take-screenrecord', 200)
 
 	location = None
 	requested_command = None
