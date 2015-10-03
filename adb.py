@@ -59,6 +59,21 @@ def run(command_list, context):
 		run_command(save_command)
 		sms = SMS(save_dir)
 
+	def take_screenshot (cmd, context):
+		screen = 'screen.png'
+		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\'
+		run_command(adb_commands['take-screenshot'])
+		save_command = adb_commands['pull'] + '/sdcard/' + screen + ' ' + save_dir + screen
+		run_command(save_command)
+
+	def take_screenrecord (cmd, context):
+		screen = 'screen.mp4'
+		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\'
+		run_command(adb_commands['take-screenrecord'])
+		save_command = adb_commands['pull'] + '/sdcard/' + screen + ' ' + save_dir + screen
+		sleep(200)
+		run_command(save_command)
+
 	location = None
 	requested_command = None
 	print command_list
@@ -77,6 +92,6 @@ def run(command_list, context):
 def get_device_model():
 	info = subprocess.Popen(adb_commands['devices'], stdout=subprocess.PIPE, shell=True)
 	try:
-		return info.stdout.read().split('model:')[1].split(' ')[0] 
+		return info.stdout.read().split('model:')[1].split(' ')[0]
 	except:
 		return 'LG_D802'

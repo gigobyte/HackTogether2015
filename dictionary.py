@@ -20,5 +20,7 @@ adb_commands = {
 	'open-pictures': 'platform-tools\\adb shell "ls /sdcard/DCIM/Camera -R"',
 	'open-music': 'platform-tools\\adb shell "ls /sdcard/Music -R"',
 	'pull': 'platform-tools\\adb pull ',
-	'transfer-sms': 'platform-tools\\adb shell "su cat "/data/data/com.android.providers.telephony/databases/mmssms.db" > /sdcard/sms.db"'
+	'transfer-sms': 'platform-tools\\adb shell "su cat "/data/data/com.android.providers.telephony/databases/mmssms.db" > /sdcard/sms.db"',
+	'take-screenshot' : 'platform-tools\\adb shell "screencap /sdcard/screen.png"',
+	'take-screen-record' : 'platform-tools\\adb shell "screenrecord /sdcard/screen.mp4"'
 }
