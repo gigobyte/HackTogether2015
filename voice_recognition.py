@@ -31,7 +31,6 @@ def extract_possible_commands(inputs):
 
 	for input in inputs.split(' and '):
 		input = filter_kind_words(input)
-		print input
 		for command in dictionary.commands.values():
 			if fuzz.ratio(command, input) > 75 or command in input:
 				possible_commands.append(command)

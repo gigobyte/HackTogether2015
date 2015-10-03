@@ -34,14 +34,14 @@ adb_commands = {
 }
 
 kind_words = {
-	'please',
-	'would',
-	'could',
-	'can',
-	'want',
-	'my',
-	'hope',
-	'you',
-	'can',
+	'please ',
+	'would ',
+	'could ',
+	'can ',
+	'want ',
+	'my ',
+	'hope ',
+	'you ',
+	'can ',
 	' i '
 }
