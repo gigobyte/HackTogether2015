@@ -66,6 +66,12 @@ def microphoneAction():
         listening = False
 
 def listen_and_do():
+	result = vr.get_text_from_wav("recordings/take_a_picture.wav")
+	print result
+	mem = CommandQueue()
+	real_commands = vr.extract_possible_commands(result)
+	mem = adb.run(real_commands, mem, result)
+	'''
     print 'listen_and_do() called'
     mem = CommandQueue()
     global listening
@@ -74,7 +80,7 @@ def listen_and_do():
         usr_input = vr.get_mic_input()
         print usr_input
         real_commands = vr.extract_possible_commands(usr_input)
-        mem = adb.run(real_commands, mem, usr_input)
+        mem = adb.run(real_commands, mem, usr_input)'''
 
 def gui(device):
 	global top
