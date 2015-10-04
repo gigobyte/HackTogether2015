@@ -26,6 +26,9 @@ import adb
 import requests
 import threading
 import tkFont
+import tkMessageBox
+import subprocess
+
 
 listening = False
 
@@ -38,14 +41,14 @@ def startSystemTray():
 	SysTrayIcon(icons.next(), hover_text, menu_options, on_quit=Terminate, default_menu_index=1)
 
 def onClosing():
-		global top
-		top.destroy()
+	global top
+	top.destroy()
 
 def Terminate():
-		sys.exit()
+	sys.exit()
 
 def Remake():
-		main()
+	main()
 
 def microphoneAction():
 	global microphone_check
@@ -86,10 +89,13 @@ def listen_and_do():
 		real_commands = vr.extract_possible_commands(usr_input)
 		mem = adb.run(real_commands, mem, usr_input)'''
 
-def gui(device):
+def gui():
 	global top
+	top = Tkinter.Tk()
+
 	global microphone_check
 	global microphone
+	global device
 	flag = 0
 	top.overrideredirect(1)
 	top.title("Smartphone Voice")
@@ -99,9 +105,7 @@ def gui(device):
 	
 	image_size = image.size
 	width = image_size[0]
-	global height
 	height = image_size[1]
-	global set_width
 	set_width = width - 125
 	
 	top.resizable(width=FALSE, height=FALSE)
@@ -122,11 +126,16 @@ def gui(device):
 	photoImage = ImageTk.PhotoImage(image)
 	label = Label(image=photoImage, background = 'white')
 	label.image = photoImage
-	label.pack()
+	label.pack(fill="x")
 
 	''' SHOW TEXT '''
 	connect_to_string = "Connected to " + device + ":"
 	connect_to = Label(text=connect_to_string, background = 'white', font=tkFont.Font(family="Helvetica", size=10))
+	if len(device) <= 9:
+		connect_to = Label(text=connect_to_string, background = 'white', font=tkFont.Font(family="Helvetica", size=10))
+	else:
+		connect_to_string = "Connected to " + "\n" + device + ":"
+		connect_to = Label(text=connect_to_string, background = 'white', font=tkFont.Font(family="Helvetica", size=9))
 	connect_to.text = connect_to_string
 	connect_to.pack(fill="x")
 
@@ -149,16 +158,15 @@ def main():
 	device = model_name
 	scraped_page = scraped_page.split("http://cdn2.gsmarena.com/vv/bigpic/")[1].split("alt=")[0].split(";")[0]
 	scraped_gsm_image = scraped_page[:-1]
-	global top
 	global microphone_check
 	microphone_check = 0
-	top = Tkinter.Tk()
 	urllib.urlretrieve("http://cdn2.gsmarena.com/vv/bigpic/%s" % scraped_gsm_image, "phone.jpg")
-	t = threading.Thread(target=startSystemTray)
-	t.daemon = True
-	t.start()
-	gui(device)
+	system_tray_thread = threading.Thread(target=startSystemTray)
+	system_tray_thread.daemon = True
+	system_tray_thread.start()
+	gui()
 	
 
 if __name__ == '__main__':
+	subprocess.Popen(["python", 'calls_background.py'])
 	main()
