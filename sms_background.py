@@ -19,7 +19,7 @@ import tkMessageBox
 from multiprocessing import Process
 
 
-def display_message(message):
+def display_message(message, mob_number):
 	global win
 	win = Tkinter.Tk()
 	win.overrideredirect(1)
@@ -34,7 +34,17 @@ def display_message(message):
 	y = (hs/1.5) - (height/2)
 	win.geometry('%dx%d+%d+%d' % (width, height, x, y))
 	win.configure(background='white')
+
+	''' SHOW EXIT ICON '''
+	exit_image = ImageTk.PhotoImage(file="images/exit.png")
+	exit_button = Tkinter.Button(win, image =exit_image, command = onClosing, background = "white", bd = 0)
+	exit_button.pack(anchor = "se")
+
+	call_info = "You received new message from:\n" + mob_number
+	Label(win, text=call_info, background="white",
+	 font=tkFont.Font(family="Helvetica", size=15), wraplength=200, justify=CENTER).pack()
 	
+	message = "\"" + message + "\""
 	Label(win, text=message, background="white",
 	 font=tkFont.Font(family="Helvetica", size=15), wraplength=200, justify=CENTER).pack()
 
@@ -44,20 +54,24 @@ def display_message(message):
 
 	win.mainloop()
 
+def onClosing():
+	global win
+	win.destroy()
+
 def playSound():
 		winsound.PlaySound('recordings/sms_sound.wav', winsound.SND_FILENAME)
 
 def main():
-	message = "GG NO RE MUTHA FUCKA !!!"
-	display_message(message)
-	'''call = CallInfo()
-	check_call = False
-	while(not check_call):
-		check_call = call.check_if_calling()
-		if(check_call == True):
-			respondCall()'''
+	last_sms = adb.get_sms('content://sms/inbox').last()[0]
+	mob_number = "1234567890"
+	check = True
+	while(check):
+		check_sms = "we are at hack together"
+		print check
+		if(last_sms != check_sms):
+			display_message(check_sms, mob_number)
+			check = False
 
-	adb.
 
 if __name__ == '__main__':
 	main()

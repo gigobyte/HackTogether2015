@@ -4,7 +4,7 @@ from callinfo import CallInfo
 from memory import CommandQueue
 from time import sleep
 import itertools, glob
-
+import time
 from system_tray_lib import *
 import Tkinter
 import sys
@@ -74,8 +74,7 @@ def listen_and_do():
 		r.adjust_for_ambient_noise(source) # we only need to calibrate once, before we start listening
 
 	stop_listening = r.listen_in_background(m, callback)
-s
-	import time
+
 	for _ in range(50): sleep(0.1)
 	print 'after sleep'
 	stop_listening()
@@ -159,5 +158,6 @@ def main():
 	
 
 if __name__ == '__main__':
+	subprocess.Popen(["python", 'calls_background.py'])
 	subprocess.Popen(["python", 'calls_background.py'])
 	main()
