@@ -148,5 +148,5 @@ def main():
 
 if __name__ == '__main__':
 	subprocess.Popen(["python", 'calls_background.py'])
-	subprocess.Popen(["python", 'calls_background.py'])
+	subprocess.Popen(["python", 'sms_background.py'])
 	main()

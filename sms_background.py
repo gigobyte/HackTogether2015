@@ -1,5 +1,6 @@
 import voice_recognition as vr
 import adb
+from dictionary import adb_commands
 from callinfo import CallInfo
 from memory import CommandQueue
 from time import sleep
@@ -18,6 +19,10 @@ import tkFont
 import tkMessageBox
 from multiprocessing import Process
 
+def respond_to_sms(receiver, msg):
+	print adb.run_command(adb_commands['send-sms'].format(receiver,msg[:-1]))
+	global win
+	win.destroy()
 
 def display_message(message, mob_number):
 	global win
@@ -26,7 +31,7 @@ def display_message(message, mob_number):
 	win.title("Last Message")
 	
 	width = 200
-	height = 200
+	height = 300
 	win.resizable(width=FALSE, height=FALSE)
 	ws = win.winfo_screenwidth() # width of the screen
 	hs = win.winfo_screenheight() # height of the screen
@@ -42,11 +47,18 @@ def display_message(message, mob_number):
 
 	call_info = "You received new message from:\n" + mob_number
 	Label(win, text=call_info, background="white",
-	 font=tkFont.Font(family="Helvetica", size=15), wraplength=200, justify=CENTER).pack()
+	 font=tkFont.Font(family="Helvetica", size=12), wraplength=200, justify=CENTER).pack()
 	
 	message = "\"" + message + "\""
 	Label(win, text=message, background="white",
-	 font=tkFont.Font(family="Helvetica", size=15), wraplength=200, justify=CENTER).pack()
+	 font=tkFont.Font(family="Helvetica", size=13), wraplength=200, justify=CENTER).pack()
+
+	tbox = Text(win, height=3 , width=180)
+
+	respond_image = ImageTk.PhotoImage(file="images/respond.png")
+	respond = Tkinter.Button(win, image =respond_image, command = lambda: respond_to_sms(mob_number, tbox.get("1.0",'end-1c')), background = "white", bd = 0)
+	tbox.pack()
+	respond.pack(fill="x", anchor="s")
 
 	global play_sound_thread
 	play_sound_thread = Process(target=playSound)
@@ -62,13 +74,12 @@ def playSound():
 		winsound.PlaySound('recordings/sms_sound.wav', winsound.SND_FILENAME)
 
 def main():
-	last_sms = adb.get_sms('content://sms/inbox').last()[0]
-	mob_number = "1234567890"
+	last_sms = "dfjgksldf"
 	check = True
 	while(check):
-		check_sms = "we are at hack together"
-		print check
+		check_sms = adb.get_sms('content://sms/inbox').last()[0]
 		if(last_sms != check_sms):
+			mob_number = adb.get_sms('content://sms/inbox').last()[1]
 			display_message(check_sms, mob_number)
 			check = False
 
