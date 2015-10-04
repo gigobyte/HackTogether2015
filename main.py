@@ -100,7 +100,7 @@ def gui():
 	ws = top.winfo_screenwidth() # width of the screen
 	hs = top.winfo_screenheight() # height of the screen
 	x = (ws/1.05) - (width/2)
-	y = (hs/1.28) - (height/2)
+	y = (hs/1.275) - (height/2)
 	top.geometry('%dx%d+%d+%d' % (width+10, height+92, x, y))
 
 	''' SHOW EXIT ICON '''
@@ -142,7 +142,6 @@ def main():
 	url = "http://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=" + device
 	scraped_page = requests.get(url).text
 	model_name = scraped_page.split("specs-phone-name-title")[1].split("h1")[0].split(">")[1].split("<")[0]
-	print model_name
 	device = model_name
 	scraped_page = scraped_page.split("http://cdn2.gsmarena.com/vv/bigpic/")[1].split("alt=")[0].split(";")[0]
 	scraped_gsm_image = scraped_page[:-1]
