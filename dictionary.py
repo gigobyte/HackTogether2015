@@ -31,7 +31,7 @@ adb_commands = {
 	'check-callstate': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallState"',
 	'check-callnumber': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallIncomingNumber"',
 	'db':  'platform-tools\\adb shell "su -c \'content query --uri\' "',
-	'send sms' : 'platform-tools\\adb shell "am start -a android.intent.action.SENDTO -d sms:{} --es sms_body \"{}\" --ez exit_on_sent true && input keyevent 22 && input keyevent 66"'
+	'send-sms' : 'platform-tools\\adb shell "am start -a android.intent.action.SENDTO -d sms:{} --es sms_body \"{}\" --ez exit_on_sent true && input keyevent 22 && input keyevent 66"'
 }
 
 kind_words = {

@@ -81,7 +81,7 @@ def run(command_list, context, original_input):
 		engine.runAndWait()
 
 	def send_sms(cmd, context, msg, receiver):
-		run_command(adb_commands['send_sms'].format(receiver, msg))
+		run_command(adb_commands['send sms'].format(receiver, msg))
 
 	def take_screenshot(cmd, context):
 		return screen_capture(cmd, context, 'png', 'take-screenshot', 5, 'shot')
