@@ -7,7 +7,7 @@ class SMS(object):
 		return self.file.split('\n')[0].split('body=')[1].split(', service_center')[0]
 
 	def all(self):
-		if self.smss: return self.smss
+		self.smss = []
 
 		for line in self.file.split('\n'):
 			try:
