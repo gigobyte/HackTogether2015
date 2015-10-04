@@ -49,8 +49,8 @@ def microphoneAction():
 		image = ImageTk.PhotoImage(Image.open('images/button_activated.gif'))
 		microphone.config(image=image, background = "white", bd = 0)
 		microphone.image = image
-		threading.Thread(target=listen_and_do).start()
 		listening = True
+		threading.Thread(target=listen_and_do).start()
 	else:
 		image = ImageTk.PhotoImage(Image.open('images/1.png'))
 		microphone.config(image=image, background = "white", bd = 0)
@@ -58,31 +58,16 @@ def microphoneAction():
 		listening = False
 
 def listen_and_do():
-	# print 'listen_and_do() called'
-	# def callback(recognizer, audio):
-	# 	print 'callback() called'
-	# 	try:
-	# 		print("Google Speech Recognition thinks you said " + recognizer.recognize_google(audio))
-	# 	except sr.UnknownValueError:
-	# 		print("Google Speech Recognition could not understand audio")
-	# 	except sr.RequestError as e:
-	# 		print("Could not request results from Google Speech Recognition service; {0}".format(e))
-
-	# r = sr.Recognizer()
-	# m = sr.Microphone()
-	# with m as source:
-	# 	r.adjust_for_ambient_noise(source) # we only need to calibrate once, before we start listening
-
-	# stop_listening= r.listen_in_background(m, callback)
-
-	# for _ in range(50): sleep(0.1)
-	# print 'after sleep'
-	# stop_listening()
-	# while True: sleep(0.1)
 	mem = CommandQueue()
+	global listening
 
-	mem = adb.run(['take screenshot'], mem, None)
-	mem = adb.run(['save it to computer'], mem, None)
+	while listening:
+		print listening
+		usr_input = vr.get_mic_input()
+		print usr_input
+		real_commands = vr.extract_possible_commands(usr_input)
+		mem = adb.run(real_commands, mem, usr_input)
+		sleep(1)
 
 def gui():
 	global top

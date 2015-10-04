@@ -5,14 +5,13 @@ from fuzzywuzzy import fuzz
 def get_mic_input():
 	r = sr.Recognizer()
 	with sr.Microphone() as source:
+		r.adjust_for_ambient_noise(source)
+		print 'Say something'
 		audio = r.listen(source)
 
 	print 'audio done'
 
-	try:
-		return r.recognize_google(audio)
-	except:
-		pass
+	return r.recognize_google(audio)
 
 def get_text_from_wav(path):
 	r = sr.Recognizer()
