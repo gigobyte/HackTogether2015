@@ -17,6 +17,7 @@ import threading
 import tkFont
 import tkMessageBox
 import subprocess
+import speech_recognition as sr
 
 listening = False
 
@@ -57,27 +58,28 @@ def microphoneAction():
 		listening = False
 
 def listen_and_do():
-	# result = vr.get_text_from_wav('recordings/take_a_picture.wav')
-	# print result
-	# mem = CommandQueue()
-	# real_commands = vr.extract_possible_commands(result)
-	# #mem = adb.run(real_commands, mem, result)
-	# result = vr.get_text_from_wav('recordings/send_computer.wav')
-	# print result
-	# real_commands = vr.extract_possible_commands(result)
-	# #mem = adb.run(real_commands, mem, result)
-	mem = CommandQueue()
-	adb.run(['read my last sms'], mem, None)
+	print 'listen_and_do() called'
+	def callback(recognizer, audio):
+		print 'callback() called'
+		try:
+			print("Google Speech Recognition thinks you said " + recognizer.recognize_google(audio))
+		except sr.UnknownValueError:
+			print("Google Speech Recognition could not understand audio")
+		except sr.RequestError as e:
+			print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
-	# print 'listen_and_do() called'
-	# mem = CommandQueue()
-	# global listening
+	r = sr.Recognizer()
+	m = sr.Microphone()
+	with m as source:
+		r.adjust_for_ambient_noise(source) # we only need to calibrate once, before we start listening
 
-	# while listening:
-	# 	usr_input = vr.get_mic_input()
-	# 	print usr_input
-	# 	real_commands = vr.extract_possible_commands(usr_input)
-	# 	mem = adb.run(real_commands, mem, usr_input)
+	stop_listening = r.listen_in_background(m, callback)
+s
+	import time
+	for _ in range(50): sleep(0.1)
+	print 'after sleep'
+	stop_listening()
+	while True: sleep(0.1)
 
 def gui():
 	global top
