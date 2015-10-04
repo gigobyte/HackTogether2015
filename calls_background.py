@@ -4,18 +4,7 @@ from callinfo import CallInfo
 from memory import CommandQueue
 from time import sleep
 import itertools, glob
-
-# hardcoded = [
-#   'get contacts'
-# ]
-
-# mem = CommandQueue()
-
-# for usr_input in hardcoded:
-#   real_commands = vr.extract_possible_commands(usr_input)
-#   mem = adb.run(real_commands, mem, usr_input)
-
-
+import winsound, sys
 from system_tray_lib import *
 import Tkinter
 import sys
@@ -27,6 +16,7 @@ import requests
 import threading
 import tkFont
 import tkMessageBox
+from multiprocessing import Process
 
 def respondCall():
 	call = CallInfo()
@@ -35,6 +25,7 @@ def respondCall():
 
 	global win
 	win = Tkinter.Tk()
+	win.overrideredirect(1)
 	win.title("Incoming Call")
 	
 	width = 370
@@ -56,19 +47,29 @@ def respondCall():
 	button_accept = Button(win, image=photoImage_accept, command=acceptCall, bd = 0, background="white").pack(side=LEFT)
 	button_reject = Button(win, image=photoImage_reject, command=rejectCall, bd = 0, background="white").pack(side=RIGHT)
 
+	global play_sound_thread
+	play_sound_thread = Process(target=playSound)
+	play_sound_thread.start()
+
 	win.mainloop()
 
 def acceptCall():
 	call = CallInfo()
 	call.accept_call()
+	play_sound_thread.terminate()
 	win.destroy()
 	main()
 
 def rejectCall():
 	call = CallInfo()
 	call.decline_call()
+	play_sound_thread.terminate()
 	win.destroy()
 	main()
+
+def playSound():
+	while(1):
+		winsound.PlaySound('recordings/phone_ring.wav', winsound.SND_FILENAME)
 
 def main():
 	call = CallInfo()
