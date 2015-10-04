@@ -57,7 +57,7 @@ def run(command_list, context, original_input):
 		run_command(adb_commands['transfer-sms'])
 		save_command = adb_commands['pull'] + '/sdcard/sms.db' + ' ' + save_dir
 		run_command(save_command)
-		sms = SMS(save_dir)
+		return save_dir
 
 	def screen_capture(cmd, context, screen, command, sec, called):
 		print 'take_screen' + called + '() called'
@@ -71,6 +71,9 @@ def run(command_list, context, original_input):
 		run_command(save_command)
 		os.system(save_dir)
 		return save_dir
+
+	def read_sms(cmd, context):
+		show_messages(cmd, context)
 
 	def take_screenshot(cmd, context):
 		return screen_capture(cmd, context, 'png', 'take-screenshot', 5, 'shot')
@@ -105,6 +108,8 @@ def run(command_list, context, original_input):
 			location = take_screenrecord(cmd, context, seconds)
 		elif cmd == commands['get-contacts']:
 			location = db(cmd, context, 'content://com.android.contacts/contacts')
+		elif cmd == commands['read-sms']:
+			location = read_sms(cmd, context)
 
 		context.add(Command(cmd, location))
 

@@ -31,12 +31,13 @@ import tkMessageBox
 def respondCall():
 	call = CallInfo()
 	number = call.get_caller_number()
-	
+	caller = call.get_caller_name()
+
 	global win
 	win = Tkinter.Tk()
 	win.title("Incoming Call")
 	
-	width = 355
+	width = 360
 	height = 100
 	win.resizable(width=FALSE, height=FALSE)
 	ws = win.winfo_screenwidth() # width of the screen
@@ -46,7 +47,7 @@ def respondCall():
 	win.geometry('%dx%d+%d+%d' % (width, height, x, y))
 	win.configure(background='white')
 	
-	message = number + "is calling"
+	message = '{} ({})\n is calling'.format(caller, number)
 	Label(win, text=message, background="white", font=tkFont.Font(family="Helvetica", size=15)).pack()
 
 	photoImage_accept = ImageTk.PhotoImage(file="images/accept.png")
