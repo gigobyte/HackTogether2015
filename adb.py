@@ -72,8 +72,13 @@ def run(command_list, context, original_input):
 		os.system(save_dir)
 		return save_dir
 
-	def read_sms(cmd, context):
-		show_messages(cmd, context)
+	def read_sms(cmd, context, uri):
+		sms = get_sms(uri).last()
+		import pyttsx
+		print 'done'
+		engine = pyttsx.init()
+		engine.say(sms)
+		engine.runAndWait()
 
 	def take_screenshot(cmd, context):
 		return screen_capture(cmd, context, 'png', 'take-screenshot', 5, 'shot')
@@ -109,7 +114,7 @@ def run(command_list, context, original_input):
 		elif cmd == commands['get-contacts']:
 			location = db(cmd, context, 'content://com.android.contacts/contacts')
 		elif cmd == commands['read-sms']:
-			location = read_sms(cmd, context)
+			location = read_sms(cmd, context, 'content://sms/inbox')
 
 		context.add(Command(cmd, location))
 
@@ -121,3 +126,9 @@ def get_device_model():
 		return info.split('model:')[1].split(' ')[0]
 	except:
 		return 'LG_D802'
+
+def get_sms(uri):
+	export = os.environ['USERPROFILE'] + '\\Desktop\\sms'
+	run_command(adb_commands['db'] + uri + ' > ' + export)
+	sms = SMS(export)
+	return sms

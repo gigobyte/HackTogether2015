@@ -57,25 +57,27 @@ def microphoneAction():
 		listening = False
 
 def listen_and_do():
-	result = vr.get_text_from_wav('recordings/take_a_picture.wav')
-	print result
+	# result = vr.get_text_from_wav('recordings/take_a_picture.wav')
+	# print result
+	# mem = CommandQueue()
+	# real_commands = vr.extract_possible_commands(result)
+	# #mem = adb.run(real_commands, mem, result)
+	# result = vr.get_text_from_wav('recordings/send_computer.wav')
+	# print result
+	# real_commands = vr.extract_possible_commands(result)
+	# #mem = adb.run(real_commands, mem, result)
 	mem = CommandQueue()
-	real_commands = vr.extract_possible_commands(result)
-	mem = adb.run(real_commands, mem, result)
-	result = vr.get_text_from_wav('recordings/send_computer.wav')
-	real_commands = vr.extract_possible_commands(result)
-	mem = adb.run(real_commands, mem, result)
+	adb.run(['read my last sms'], mem, None)
 
-	'''
-	print 'listen_and_do() called'
-	mem = CommandQueue()
-	global listening
+	# print 'listen_and_do() called'
+	# mem = CommandQueue()
+	# global listening
 
-	while listening:
-		usr_input = vr.get_mic_input()
-		print usr_input
-		real_commands = vr.extract_possible_commands(usr_input)
-		mem = adb.run(real_commands, mem, usr_input)'''
+	# while listening:
+	# 	usr_input = vr.get_mic_input()
+	# 	print usr_input
+	# 	real_commands = vr.extract_possible_commands(usr_input)
+	# 	mem = adb.run(real_commands, mem, usr_input)
 
 def gui():
 	global top
@@ -100,8 +102,8 @@ def gui():
 	ws = top.winfo_screenwidth() # width of the screen
 	hs = top.winfo_screenheight() # height of the screen
 	x = (ws/1.05) - (width/2)
-	y = (hs/1.275) - (height/2)
-	top.geometry('%dx%d+%d+%d' % (width+10, height+92, x, y))
+	y = (hs/1.31) - (height/2)
+	top.geometry('%dx%d+%d+%d' % (width+10, height+120, x, y))
 
 	''' SHOW EXIT ICON '''
 	exit_image = ImageTk.PhotoImage(file="images/exit.png")

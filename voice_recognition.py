@@ -7,6 +7,8 @@ def get_mic_input():
 	with sr.Microphone() as source:
 		audio = r.listen(source)
 
+	print 'audio done'
+
 	try:
 		return r.recognize_google(audio)
 	except:
