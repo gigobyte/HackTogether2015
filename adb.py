@@ -49,6 +49,13 @@ def run(command_list, context, original_input):
 			sleep(2)
 			os.system(save_dir)
 
+		if what_to_save == commands['take-screenshot']:
+			save_dir = os.environ['USERPROFILE'] + '\\Desktop\\screen.png'
+			save_command = adb_commands['pull'] + where_to_save + ' ' + save_dir
+			run_command(save_command)
+			sleep(2)
+			os.system(save_dir)			
+
 		return where_to_save
 
 	def show_messages(cmd, context):
@@ -64,12 +71,15 @@ def run(command_list, context, original_input):
 		s = 'screen.' + screen
 		save_dir = os.environ['USERPROFILE'] + '\\Desktop\\' + s
 
+		save_command = None
+
 		if command == 'take-screenrecord':
 			run_command(adb_commands[command] + ' --time-limit ' + str(sec))
-			save_command = adb_commands['pull'] + '/sdcard/' + s + ' ' + save_dir
 			sleep(sec+5)
-		run_command(save_command)
-		os.system(save_dir)
+		if command == 'take-screenshot':
+			print run_command(adb_commands[command])
+			sleep(2)
+		
 		return save_dir
 
 	def read_sms(cmd, context, uri):
@@ -80,8 +90,8 @@ def run(command_list, context, original_input):
 		engine.say(sms[0])
 		engine.runAndWait()
 
-	def send_sms(cmd, context, msg, receiver):
-		run_command(adb_commands['send sms'].format(receiver, msg))
+	def send_sms(msg, receiver):
+		run_command(adb_commands['send-sms'].format(receiver, msg))
 
 	def take_screenshot(cmd, context):
 		return screen_capture(cmd, context, 'png', 'take-screenshot', 5, 'shot')

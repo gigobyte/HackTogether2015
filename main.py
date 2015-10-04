@@ -58,27 +58,31 @@ def microphoneAction():
 		listening = False
 
 def listen_and_do():
-	print 'listen_and_do() called'
-	def callback(recognizer, audio):
-		print 'callback() called'
-		try:
-			print("Google Speech Recognition thinks you said " + recognizer.recognize_google(audio))
-		except sr.UnknownValueError:
-			print("Google Speech Recognition could not understand audio")
-		except sr.RequestError as e:
-			print("Could not request results from Google Speech Recognition service; {0}".format(e))
+	# print 'listen_and_do() called'
+	# def callback(recognizer, audio):
+	# 	print 'callback() called'
+	# 	try:
+	# 		print("Google Speech Recognition thinks you said " + recognizer.recognize_google(audio))
+	# 	except sr.UnknownValueError:
+	# 		print("Google Speech Recognition could not understand audio")
+	# 	except sr.RequestError as e:
+	# 		print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
-	r = sr.Recognizer()
-	m = sr.Microphone()
-	with m as source:
-		r.adjust_for_ambient_noise(source) # we only need to calibrate once, before we start listening
+	# r = sr.Recognizer()
+	# m = sr.Microphone()
+	# with m as source:
+	# 	r.adjust_for_ambient_noise(source) # we only need to calibrate once, before we start listening
 
-	stop_listening = r.listen_in_background(m, callback)
+	# stop_listening= r.listen_in_background(m, callback)
 
-	for _ in range(50): sleep(0.1)
-	print 'after sleep'
-	stop_listening()
-	while True: sleep(0.1)
+	# for _ in range(50): sleep(0.1)
+	# print 'after sleep'
+	# stop_listening()
+	# while True: sleep(0.1)
+	mem = CommandQueue()
+
+	mem = adb.run(['take screenshot'], mem, None)
+	mem = adb.run(['save it to computer'], mem, None)
 
 def gui():
 	global top
