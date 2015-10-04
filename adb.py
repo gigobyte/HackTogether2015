@@ -74,11 +74,14 @@ def run(command_list, context, original_input):
 
 	def read_sms(cmd, context, uri):
 		sms = get_sms(uri).last()
+		print sms
 		import pyttsx
-		print 'done'
 		engine = pyttsx.init()
-		engine.say(sms)
+		engine.say(sms[0])
 		engine.runAndWait()
+
+	def send_sms(cmd, context, msg, receiver):
+		run_command(adb_commands['send_sms'].format(receiver, msg))
 
 	def take_screenshot(cmd, context):
 		return screen_capture(cmd, context, 'png', 'take-screenshot', 5, 'shot')
