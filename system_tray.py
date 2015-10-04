@@ -5,17 +5,6 @@ from memory import CommandQueue
 from time import sleep
 import itertools, glob
 
-# hardcoded = [
-#   'get contacts'
-# ]
-
-# mem = CommandQueue()
-
-# for usr_input in hardcoded:
-#   real_commands = vr.extract_possible_commands(usr_input)
-#   mem = adb.run(real_commands, mem, usr_input)
-
-
 from system_tray_lib import *
 import Tkinter
 import sys
@@ -28,7 +17,6 @@ import threading
 import tkFont
 import tkMessageBox
 import subprocess
-
 
 listening = False
 
@@ -111,9 +99,9 @@ def gui():
 	top.resizable(width=FALSE, height=FALSE)
 	ws = top.winfo_screenwidth() # width of the screen
 	hs = top.winfo_screenheight() # height of the screen
-	x = (ws/1.2) - (width/2)
-	y = (hs/1.5) - (height/2)
-	top.geometry('%dx%d+%d+%d' % (width, height+92, x, y))
+	x = (ws/1.05) - (width/2)
+	y = (hs/1.28) - (height/2)
+	top.geometry('%dx%d+%d+%d' % (width+10, height+92, x, y))
 
 	''' SHOW EXIT ICON '''
 	exit_image = ImageTk.PhotoImage(file="images/exit.png")

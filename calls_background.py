@@ -37,7 +37,7 @@ def respondCall():
 	win = Tkinter.Tk()
 	win.title("Incoming Call")
 	
-	width = 360
+	width = 370
 	height = 100
 	win.resizable(width=FALSE, height=FALSE)
 	ws = win.winfo_screenwidth() # width of the screen
