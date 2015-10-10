@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import *
 import googlemaps
 import requests
 
@@ -17,21 +17,20 @@ def req(city):
 
 def GetTime(city):
     local = req(city)
-    time = local['timestamp'] + int(local['gmtOffset'])
+    time = local['timestamp']
     zone = datetime.utcfromtimestamp(time)
-    now = datetime.now()
-    dif = now - zone
-    return dif
+    return zone
 
 def Clock(city):
-    dif = GetTime(city)
+    t = GetTime(city)
     fmt = '%Y.%m.%d %H : %M : %S'
     second = 0
     while 1:
-        local = dif + datetime.utcnow()
+        local = datetime.now()
         l_sec = local.second
         if l_sec > second or l_sec == 0 and second == 59:
             second = l_sec
-            print local.strftime(fmt)
+            t = t + timedelta(seconds = 1)
+            print t.strftime(fmt)
 
-Clock('London')
+Clock('Harare')
