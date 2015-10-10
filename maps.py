@@ -1,5 +1,4 @@
 import webbrowser
-import subprocess
 from get_location import loc
 from pygeocoder import Geocoder
 from dictionary import (adb_commands, commands)
@@ -25,4 +24,4 @@ def show_coffees():
 	coffees = webbrowser.open('https://www.google.bg/maps/search/coffee+' + location, new = 1,autoraise = True)
 	return coffees
 
-#show_hotels()
+show_bars()
