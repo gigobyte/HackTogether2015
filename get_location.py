@@ -12,4 +12,4 @@ def loc():
 	#print "longitude:", longitude
 
 	results = Geocoder.reverse_geocode(float(latitude),float(longitude))
-	return results.city
+	return str(results).split(',')[0].decode('unicode_escape').encode('ascii','ignore')
