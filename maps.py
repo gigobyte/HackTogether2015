@@ -1,6 +1,6 @@
 import webbrowser
 import subprocess
-from geolocation.google_maps import GoogleMaps
+from pygeocoder import Geocoder
 from dictionary import (adb_commands, commands)
 from adb import (run_command)
 
@@ -15,6 +15,8 @@ from adb import (run_command)
 # 	print(my_location.postal_code)
 
 location = 'varna'
+
+
 
 def show_hotels(loc):
 	hotels = webbrowser.open('https://www.google.bg/maps/search/hotel+' + location, new = 1,autoraise = True)
@@ -38,3 +40,6 @@ latitude = a.split(",")[0]
 longitude = a.split(",")[1]
 print "latitude:", latitude
 print "longitude:", longitude
+
+results = Geocoder.reverse_geocode(float(latitude),float(longitude))
+print results.city
