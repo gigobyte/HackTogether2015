@@ -128,6 +128,8 @@ def run(command_list, context, original_input):
 			location = db(cmd, context, 'content://com.android.contacts/contacts')
 		elif cmd == commands['read-sms']:
 			location = read_sms(cmd, context, 'content://sms/inbox')
+		elif cmd == commands['show-bars']:
+			maps.show_bars()
 
 		context.add(Command(cmd, location))
 

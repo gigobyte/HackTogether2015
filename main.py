@@ -11,7 +11,6 @@ import sys
 from Tkinter import *
 from PIL import Image, ImageTk
 import urllib
-import adb
 import requests
 import threading
 import tkFont

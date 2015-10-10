@@ -2,8 +2,6 @@ import webbrowser
 from get_location import loc
 from pygeocoder import Geocoder
 from dictionary import (adb_commands, commands)
-from adb import (run_command)
-
 
 location = loc()
 

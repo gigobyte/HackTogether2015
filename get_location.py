@@ -1,7 +1,7 @@
 import subprocess
 from pygeocoder import Geocoder
 from dictionary import (adb_commands, commands)
-from adb import (run_command)
+from adb import run_command
 
 def loc():
 	a = run_command(adb_commands['get-location'])
