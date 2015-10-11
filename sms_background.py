@@ -74,7 +74,7 @@ def playSound():
 		winsound.PlaySound('recordings/sms_sound.wav', winsound.SND_FILENAME)
 
 def main():
-	last_sms = "dfjgksldf"
+	last_sms = adb.get_sms('content://sms/inbox').last()[0]
 	check = True
 	while(check):
 		check_sms = adb.get_sms('content://sms/inbox').last()[0]
