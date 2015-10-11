@@ -7,7 +7,7 @@ import sys
 global second
 second = 0
 global t
-t = GetTime('London')
+t = GetTime(sys.argv[1])
 print t
 
 def onClosing():
