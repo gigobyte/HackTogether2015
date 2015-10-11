@@ -11,7 +11,6 @@ import sys
 from Tkinter import *
 from PIL import Image, ImageTk
 import urllib
-import adb
 import requests
 import threading
 import tkFont
@@ -20,6 +19,7 @@ import subprocess
 import speech_recognition as sr
 
 listening = False
+microphone_check = False
 
 def startSystemTray():
 	global device
@@ -91,8 +91,8 @@ def gui():
 	top.resizable(width=FALSE, height=FALSE)
 	ws = top.winfo_screenwidth() # width of the screen
 	hs = top.winfo_screenheight() # height of the screen
-	x = (ws/1.05) - (width/2)
-	y = (hs/1.31) - (height/2)
+	x = (ws/1.07) - (width/2)
+	y = (hs/1.50) - (height/2)
 	top.geometry('%dx%d+%d+%d' % (width+10, height+120, x, y))
 
 	''' SHOW EXIT ICON '''
@@ -131,15 +131,19 @@ def gui():
 def main():
 	global device
 	device = adb.get_device_model()
-	url = "http://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=" + device
-	scraped_page = requests.get(url).text
-	model_name = scraped_page.split("specs-phone-name-title")[1].split("h1")[0].split(">")[1].split("<")[0]
-	device = model_name
-	scraped_page = scraped_page.split("http://cdn2.gsmarena.com/vv/bigpic/")[1].split("alt=")[0].split(";")[0]
-	scraped_gsm_image = scraped_page[:-1]
-	global microphone_check
-	microphone_check = 0
-	urllib.urlretrieve("http://cdn2.gsmarena.com/vv/bigpic/%s" % scraped_gsm_image, "phone.jpg")
+	try:
+		open('phone.jpg')
+	except:
+		url = "http://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=" + device
+		scraped_page = requests.get(url).text
+		model_name = scraped_page.split("specs-phone-name-title")[1].split("h1")[0].split(">")[1].split("<")[0]
+		device = model_name
+		scraped_page = scraped_page.split("http://cdn2.gsmarena.com/vv/bigpic/")[1].split("alt=")[0].split(";")[0]
+		scraped_gsm_image = scraped_page[:-1]
+		global microphone_check
+		microphone_check = 0
+		urllib.urlretrieve("http://cdn2.gsmarena.com/vv/bigpic/%s" % scraped_gsm_image, "phone.jpg")
+
 	system_tray_thread = threading.Thread(target=startSystemTray)
 	system_tray_thread.daemon = True
 	system_tray_thread.start()
@@ -148,5 +152,5 @@ def main():
 
 if __name__ == '__main__':
 	subprocess.Popen(["python", 'calls_background.py'])
-	subprocess.Popen(["python", 'calls_background.py'])
+	subprocess.Popen(["python", 'sms_background.py'])
 	main()

@@ -7,7 +7,8 @@ commands = {
 	'take-screenshot': 'take screenshot',
 	'record-screen': 'record screen for seconds',
 	'get-contacts': 'get contacts',
-	'read-sms': 'read my last sms'
+	'read-sms': 'read my last sms',
+	'show-bars': 'show bars near me'
 }
 
 adb_commands = {
@@ -31,6 +32,7 @@ adb_commands = {
 	'check-callstate': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallState"',
 	'check-callnumber': 'platform-tools\\adb shell dumpsys telephony.registry | grep "mCallIncomingNumber"',
 	'db':  'platform-tools\\adb shell "su -c \'content query --uri\' "',
+	'get-location' : 'platform-tools\\adb shell dumpsys location',
 	'send-sms' : 'platform-tools\\adb shell "am start -a android.intent.action.SENDTO -d sms:{} --es sms_body \"{}\" --ez exit_on_sent true && input keyevent 22 && input keyevent 66"'
 }
 
