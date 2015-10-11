@@ -5,6 +5,7 @@ from memory import Command
 from sms import SMS
 import re
 import os
+import webbrowser
 
 def run_command(command):
 	return subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).stdout.read()
@@ -65,6 +66,15 @@ def run(command_list, context, original_input):
 		save_command = adb_commands['pull'] + '/sdcard/sms.db' + ' ' + save_dir
 		run_command(save_command)
 		return save_dir
+
+	def show_bars():
+		print 'show_bars() called'
+		from get_location import loc
+		location = loc()
+		url_str = 'https://www.google.bg/maps/search/bars+in+' + location.replace(' ', '+')
+		webbrowser.open(url_str, new = 1,autoraise = True)
+		print adb_commands['open-browser'] + url_str
+		run_command(adb_commands['open-browser'] + url_str)
 
 	def screen_capture(cmd, context, screen, command, sec, called):
 		print 'take_screen' + called + '() called'
@@ -129,7 +139,7 @@ def run(command_list, context, original_input):
 		elif cmd == commands['read-sms']:
 			location = read_sms(cmd, context, 'content://sms/inbox')
 		elif cmd == commands['show-bars']:
-			maps.show_bars()
+			show_bars()
 
 		context.add(Command(cmd, location))
 
