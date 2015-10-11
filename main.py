@@ -131,18 +131,16 @@ def gui():
 def main():
 	global device
 	device = adb.get_device_model()
-	try:
-		open('phone.jpg')
-	except:
-		url = "http://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=" + device
-		scraped_page = requests.get(url).text
-		model_name = scraped_page.split("specs-phone-name-title")[1].split("h1")[0].split(">")[1].split("<")[0]
-		device = model_name
-		scraped_page = scraped_page.split("http://cdn2.gsmarena.com/vv/bigpic/")[1].split("alt=")[0].split(";")[0]
-		scraped_gsm_image = scraped_page[:-1]
-		global microphone_check
-		microphone_check = 0
-		urllib.urlretrieve("http://cdn2.gsmarena.com/vv/bigpic/%s" % scraped_gsm_image, "phone.jpg")
+
+	url = "http://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=" + device
+	scraped_page = requests.get(url).text
+	model_name = scraped_page.split("specs-phone-name-title")[1].split("h1")[0].split(">")[1].split("<")[0]
+	device = model_name
+	scraped_page = scraped_page.split("http://cdn2.gsmarena.com/vv/bigpic/")[1].split("alt=")[0].split(";")[0]
+	scraped_gsm_image = scraped_page[:-1]
+	global microphone_check
+	microphone_check = 0
+	urllib.urlretrieve("http://cdn2.gsmarena.com/vv/bigpic/%s" % scraped_gsm_image, "phone.jpg")
 
 	system_tray_thread = threading.Thread(target=startSystemTray)
 	system_tray_thread.daemon = True

@@ -1,11 +1,12 @@
 import Tkinter as tk
 from datetime import *
 from world_time import req, GetTime, Clock
+import sys
 
 global second
 second = 0
 global t
-t = GetTime('London')
+t = GetTime(sys.argv[1])
 print t
 
 def update_timeText():

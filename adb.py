@@ -92,6 +92,9 @@ def run(command_list, context, original_input):
 		
 		return save_dir
 
+	def show_time(town):
+		subprocess.Popen(["python", 'view_clock.py', town])
+
 	def read_sms(cmd, context, uri):
 		sms = get_sms(uri).last()
 		print sms
@@ -140,6 +143,8 @@ def run(command_list, context, original_input):
 			location = read_sms(cmd, context, 'content://sms/inbox')
 		elif cmd == commands['show-bars']:
 			show_bars()
+		elif cmd == commands['what-time']:
+			show_time(original_input.split(' ')[-1])
 
 		context.add(Command(cmd, location))
 

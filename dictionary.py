@@ -8,7 +8,8 @@ commands = {
 	'record-screen': 'record screen for seconds',
 	'get-contacts': 'get contacts',
 	'read-sms': 'read my last sms',
-	'show-bars': 'show bars near me'
+	'show-bars': 'show bars near me',
+	'what-time': "what's the time in"
 }
 
 adb_commands = {
